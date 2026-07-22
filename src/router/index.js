@@ -11,7 +11,7 @@ const backendRoutes = [
                 path:'dashboard',
                 component: ()=> import('@/views/dashboard.vue'),
                 meta:{
-                    title: 'Data Analysis',
+                    title: 'Dashboard',
                     icon: 'PieChart'
                 }
             },
