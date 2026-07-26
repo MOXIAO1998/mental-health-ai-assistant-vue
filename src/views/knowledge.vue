@@ -37,10 +37,11 @@
             <el-table-column label="Actions" witdth="240" fixed="right">
                 <template #default="scope">
                     <el-button @click="handleEdit(scope.row)" text type="primary">Edit</el-button>
-                    <el-button v-if="scope.row.status === 0 || scope.row.status === 2" text
-                        type="success">Publish</el-button>
-                    <el-button v-if="scope.row.status === 1" text type="warning">Offline</el-button>
-                    <el-button text type="danger">Delete</el-button>
+                    <el-button @click="handlePublish(scope.row)" v-if="scope.row.status === 0 || scope.row.status === 2"
+                        text type="success">Publish</el-button>
+                    <el-button @click="handleUnpublish(scope.row)" v-if="scope.row.status === 1" text
+                        type="warning">Unpublish</el-button>
+                    <el-button @click="handleDelete(scope.row)" text type="danger">Delete</el-button>
                 </template>
             </el-table-column>
         </el-table>
@@ -56,9 +57,9 @@
 import { onMounted, ref, reactive } from 'vue';
 import PageHead from '@/components/PageHead.vue';
 import TableSearch from '@/components/TableSearch.vue';
-import { categoryTree, articlePage, getArticleDetail } from '@/api/admin';
+import { categoryTree, articlePage, getArticleDetail, changeArticleStatus, deleteArticle } from '@/api/admin';
 import ArticleDialog from '@/components/ArticleDialog.vue';
-
+import { ElMessage, ElMessageBox } from 'element-plus';
 const formItem = [
     {
         comp: 'input',
@@ -141,7 +142,9 @@ const dialogVisible = ref(false)
 const currentArticle = ref(null)
 
 const handleSuccess = () => {
-
+    dialogVisible.value = false
+    // refresh list
+    handleSearch()
 }
 
 // Edit
@@ -161,13 +164,63 @@ const handleEdit = (row) => {
 
 }
 
+const handlePublish = (row) => {
+    ElMessageBox.confirm(
+        `Publish the Article ${row.title} ?`,
+        'Confirm',
+        {
+            confirmButtonText: 'Confirm',
+            cancelButtonText: 'Cancel',
+            type: 'info'
+        }
+    ).then(() => {
+        changeArticleStatus(row.id, { status: 1 }).then(res => {
+            ElMessage.success('Publish Successfully')
+            handleSearch()
+        })
+    })
+}
+
+const handleUnpublish = (row) => {
+    ElMessageBox.confirm(
+        `Unpublish the Article ${row.title} ?`,
+        'Confirm',
+        {
+            confirmButtonText: 'Unpublish',
+            cancelButtonText: 'Cancel',
+            type: 'warning'
+        }
+    ).then(() => {
+        changeArticleStatus(row.id, { status: 2 }).then(res => {
+            ElMessage.success('Unpublish Successfully')
+            handleSearch()
+        })
+    })
+
+}
+
+const handleDelete = (row) => {
+        ElMessageBox.confirm(
+        `Delete the Article ${row.title} ?`,
+        'Confirm',
+        {
+            confirmButtonText: 'Delete',
+            cancelButtonText: 'Cancel',
+            type: 'danger'
+        }
+    ).then(() => {
+        deleteArticle(row.id).then(res => {
+            ElMessage.success('Delete Successfully')
+            handleSearch()
+        })
+    })
+
+}
 
 
 
 onMounted(async () => {
     const data = await categoryTree()
-
-
     // content comes from API, translating to English
     categories.value = data.map(item => {
         const label = translateCategory(item.categoryName)

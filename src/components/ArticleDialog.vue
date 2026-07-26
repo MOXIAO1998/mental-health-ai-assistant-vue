@@ -60,7 +60,7 @@
         <template #footer>
             <el-button @click="btnPreview = !btnPreview">{{ btnPreview ? 'Hide Preview' : 'Preview' }}</el-button>
             <el-button type="primary" @click="handleSubmit" :loading="loading">{{ isEdit ? 'Update' : 'Submit'
-                }}</el-button>
+            }}</el-button>
             <el-button @click="dialogVisible = false">Close</el-button>
         </template>
     </el-dialog>
@@ -71,7 +71,7 @@
 <script setup>
 import { ref, reactive, computed, nextTick, watch } from 'vue'
 import { ElMessage } from 'element-plus'
-import { uploadFile, createArticle } from '@/api/admin'
+import { uploadFile, createArticle, updateArticle } from '@/api/admin'
 import { fileBaseUrl } from '@/config/index.js'
 import RichTextEditor from '@/components/RichTextEditor.vue'
 
@@ -244,10 +244,20 @@ const handleSubmit = () => {
 
         delete submitData.tagArray
 
-        createArticle(submitData).then(res => {
-            loading.value = false
-            emit('success')
-        })
+        if (!isEdit.value) {
+            submitData.id = businessId.value
+            createArticle(submitData).then(res => {
+                loading.value = false
+                emit('success')
+            })
+        } else {
+            updateArticle(props.article.id,submitData).then(res => {
+                loading.value = false
+                emit('success')
+            })
+        }
+
+
 
     })
 }
