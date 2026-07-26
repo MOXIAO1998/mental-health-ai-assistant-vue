@@ -1,7 +1,7 @@
 <template>
     <div class="navbar">
         <div class="flex-box">
-            <el-button>
+            <el-button @click="handleCollpase">
                 <el-icon><el-icon>
                         <Expand />
                     </el-icon></el-icon>
@@ -13,12 +13,14 @@
                 <div class="flex-box">
                     <el-avatar src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png" />
                     <p class="user-name">admin</p>
-                    <el-icon><ArrowDown /></el-icon>
+                    <el-icon>
+                        <ArrowDown />
+                    </el-icon>
                 </div>
                 <template #dropdown>
-                    <el-dropdown-mentu>
+                    <el-dropdown-menu>
                         <el-dropdown-item command="logout">Logout</el-dropdown-item>
-                    </el-dropdown-mentu>
+                    </el-dropdown-menu>
                 </template>
             </el-dropdown>
         </div>
@@ -26,17 +28,24 @@
 </template>
 
 <script setup>
-    const handleCommand = (command) => {
-        if (command === 'logout'){
-            //logout
-        }
+import { ref } from 'vue'
+import { useAdminStore } from '../stores/admin';
+
+const handleCommand = (command) => {
+    if (command === 'logout') {
+        //logout
     }
+}
+
+const handleCollpase = () => {
+    useAdminStore().toggleCollpase()
+}
 </script>
 
 
 <style lang="scss" scoped>
 .navbar {
-    height: 64px;
+    height: 100%;
     display: flex;
     align-items: center;
     justify-content: space-between;
