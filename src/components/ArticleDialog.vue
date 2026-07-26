@@ -1,5 +1,6 @@
 <template>
-    <el-dialog :title="isEdit ? 'Edit Article' : 'Add Article'" v-model="dialogVisible" width="50%" @close="handleClose">
+    <el-dialog :title="isEdit ? 'Edit Article' : 'Add Article'" v-model="dialogVisible" width="50%"
+        @close="handleClose">
 
         <el-form :model="formData" :rules="rules" ref="formRef" label-width="120px">
             <el-form-item label="Article Title" prop="title">
@@ -58,7 +59,8 @@
         </div>
         <template #footer>
             <el-button @click="btnPreview = !btnPreview">{{ btnPreview ? 'Hide Preview' : 'Preview' }}</el-button>
-            <el-button type="primary" @click="handleSubmit" :loading="loading">{{ isEdit ? 'Update' : 'Submit' }}</el-button>
+            <el-button type="primary" @click="handleSubmit" :loading="loading">{{ isEdit ? 'Update' : 'Submit'
+                }}</el-button>
             <el-button @click="dialogVisible = false">Close</el-button>
         </template>
     </el-dialog>
@@ -83,14 +85,14 @@ const props = defineProps({
         type: Array,
         default: () => []
     },
-    article:{
-        type:Object,
+    article: {
+        type: Object,
         default: null
     }
 
 })
 
-const emit = defineEmits(['update:modelValue' ,'success'])
+const emit = defineEmits(['update:modelValue', 'success'])
 
 
 const dialogVisible = computed({
@@ -108,11 +110,14 @@ const isEdit = computed(() => !!props.article?.id)
 // watch edit data
 watch(() => props.article, (newVal) => {
     if (newVal) {
-        Object.assign(formData, newVal)
-        // use existing ID
-        businessId.value = newVal.id
-        // cover URL
-        imgUrl.value = fileBaseUrl + newVal.coverImage
+        nextTick(() => {
+            Object.assign(formData, newVal)
+            // use existing ID
+            businessId.value = newVal.id
+            // cover URL
+            imgUrl.value = fileBaseUrl + newVal.coverImage
+        })
+
     }
 })
 
@@ -120,6 +125,7 @@ const handleClose = () => {
     // reset form
     formRef.value.resetFields()
     businessId.value = null
+    formData.tagArray = []
     handleRemove()
 
     emit('update:modelValue', false)
@@ -227,7 +233,7 @@ const formRef = ref()
 const loading = ref(false)
 const handleSubmit = () => {
     formRef.value.validate((valid, field) => {
-        if(valid){
+        if (valid) {
             loading.value = true
         }
 
@@ -238,8 +244,8 @@ const handleSubmit = () => {
 
         delete submitData.tagArray
 
-        createArticle(submitData).then(res=>{
-            loading.value=false
+        createArticle(submitData).then(res => {
+            loading.value = false
             emit('success')
         })
 
