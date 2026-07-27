@@ -36,7 +36,7 @@ const backendRoutes = [
                 path:'emotional',
                 component: ()=> import('@/views/emotional.vue'),
                 meta:{
-                    title: 'Emotion Log',
+                    title: 'Emotion Diary',
                     icon: 'User'
                 }
             }

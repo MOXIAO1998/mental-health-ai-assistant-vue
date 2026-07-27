@@ -36,8 +36,6 @@ const selectMenu = (key) => {
     const currentRoute = router.options.routes[0]
     // navigate to the menu page
     router.push(`${currentRoute.path}/${key.index}`)
-
-    console.log(router)
 }
 
 

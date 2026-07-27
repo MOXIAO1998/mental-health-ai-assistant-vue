@@ -200,7 +200,7 @@ const handleUnpublish = (row) => {
 }
 
 const handleDelete = (row) => {
-        ElMessageBox.confirm(
+    ElMessageBox.confirm(
         `Delete the Article ${row.title} ?`,
         'Confirm',
         {
