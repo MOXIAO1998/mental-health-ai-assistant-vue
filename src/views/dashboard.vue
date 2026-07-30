@@ -10,7 +10,7 @@
             <div class="info">
               <p class="title">Total Users</p>
               <p class="number">{{ aiData.systemOverview.totalUsers }}</p>
-              <p class="subtitle-title">Active Users{{ aiData.systemOverview.activeUsers }}</p>
+              <p class="subtitle-title">Active Users: {{ aiData.systemOverview.activeUsers }}</p>
             </div>
           </div>
         </el-card>
@@ -24,7 +24,7 @@
             <div class="info">
               <p class="title">Emotion Diary</p>
               <p class="number">{{ aiData.systemOverview.totalDiaries }}</p>
-              <p class="subtitle-title">New addition today{{ aiData.systemOverview.todayNewDiaries }}</p>
+              <p class="subtitle-title">New addition today: {{ aiData.systemOverview.todayNewDiaries }}</p>
             </div>
           </div>
         </el-card>
@@ -38,7 +38,7 @@
             <div class="info">
               <p class="title">Consultations</p>
               <p class="number">{{ aiData.systemOverview.totalSessions }}</p>
-              <p class="subtitle-title">New addition today：{{ aiData.systemOverview.todayNewSessions }}</p>
+              <p class="subtitle-title">New addition today: {{ aiData.systemOverview.todayNewSessions }}</p>
             </div>
           </div>
         </el-card>

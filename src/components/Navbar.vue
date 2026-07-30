@@ -6,7 +6,7 @@
                         <Expand />
                     </el-icon></el-icon>
             </el-button>
-            <p class="page-title">Navigator</p>
+            <p class="page-title">{{ route.meta.title }}</p>
         </div>
         <div class="flex-box">
             <el-dropdown @command="handleCommand">
@@ -30,10 +30,31 @@
 <script setup>
 import { ref } from 'vue'
 import { useAdminStore } from '../stores/admin';
+import { useRouter, useRoute } from 'vue-router'
+import { ElMessageBox } from 'element-plus';
+import { logout } from '@/api/admin'
+
+
+const router = useRouter()
+const route = useRoute()
+
 
 const handleCommand = (command) => {
     if (command === 'logout') {
         //logout
+        ElMessageBox.confirm('Want to Logout?', 'Notification', {
+            confirmButtonText: 'Logout',
+            cancelButtonText: 'Cancel',
+            type: 'warning'
+        }).then(()=>{
+            logout().then(()=>{
+                localStorage.removeItem('token')
+                localStorage.removeItem('userInfo')
+
+                router.push('/auth/login')
+            })
+        })
+
     }
 }
 

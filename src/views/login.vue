@@ -81,7 +81,8 @@ const submitForm = async (formEl) => {
                     // admin
                     router.push('/back/dashboard')
                 } else {
-                    //
+                    // normal user -> frontend homepage
+                    router.push('/')
                 }
             })
         }
