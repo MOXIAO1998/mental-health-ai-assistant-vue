@@ -18,13 +18,13 @@
                     <div class="garden-title"> Emotion Garden </div>
                 </div>
                 <div class="emotion-info">
-                    <div class="emotion-name">Neutral</div>
-                    <div class="emotion-score">50</div>
+                    <div class="emotion-name">{{getIntensityName(currentEmotion.emotionScore )}}</div>
+                    <div class="emotion-score">{{ currentEmotion.emotionScore }}</div>
                 </div>
                 <div class="warm-tips">
                     <div class="emotion-status-text">
                         <span class="status-label">Today's Feeling</span>
-                        <span class="status-emotion">{{ currentEmotion.isNegative ? 'Need Attention' : 'Not Bad'
+                        <span class="status-emotion">{{ currentEmotion.isNegative ? 'Negative' : 'Positive'
                         }}</span>
                     </div>
                     <div class="emotion-intensity">
@@ -232,7 +232,7 @@ const currentEmotion = ref({
     emotionScore: 50,
     isNegative: false,
     riskLevel: 0,
-    suggestion: 'Stable',
+    suggestion: '情绪状态平稳',
     improvementSuggestions: []
 })
 
@@ -241,9 +241,18 @@ const loadSessionEmotion = (sessionId) => {
     const id = sessionId.toString().startsWith('session_') ? sessionId : `session_${sessionId}`
 
     getSessionEmotion(id).then(res => {
-        console.log(res)
         currentEmotion.value = res
     })
+} 
+
+const getIntensityName = (score) => {
+    if (score >= 61) {
+        return "Good"
+    }
+    if (score >= 31) {
+        return "Netural"
+    }
+    return "Bad"
 }
 
 const getIntensityClass = (score) => {
@@ -319,7 +328,6 @@ const startNewSession = (message) => {
     }
     // 调用后端接口创建新会话
     startSession(sessionParams).then(res => {
-        console.log(res)
         // 将后端返回的数据转为前端会话格式
         const sessionData = {
             sessionId: res.sessionId,
@@ -383,7 +391,6 @@ const startAIResponse = (sessionId, userMessage) => {
         }),
         signal: ctrl.signal,
         onopen: (response) => {
-            console.log(response)
             if (response.headers.get('Content-Type') !== 'text/event-stream') {
                 ElMessage.error('The server returned non-streaming data.')
             }
@@ -439,17 +446,14 @@ const getSessionPage = () => {
         pageNum: 1,
         pageSize: 10
     }).then(res => {
-        console.log(res)
         sessionList.value = res.records
     })
 }
 
 // 获取会话数据
 const handleSessionClick = (session) => {
-    console.log(session, 'session')
     // 点击会话时，获取会话详情
     getSessionDetail(session.id).then(res => {
-        console.log(res)
         messages.value = res
     })
     loadSessionEmotion(session.id)
