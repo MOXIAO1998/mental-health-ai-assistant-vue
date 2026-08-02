@@ -1,6 +1,7 @@
 package com.gym.aispringboot.controller;
 
 import com.gym.aispringboot.DTO.command.UserLoginCommandDTO;
+import com.gym.aispringboot.DTO.command.UserRegisterCommandDTO;
 import com.gym.aispringboot.DTO.response.UserLoginResponseDTO;
 import com.gym.aispringboot.common.Result;
 import com.gym.aispringboot.service.UserService;
@@ -17,6 +18,7 @@ public class User {
     @Resource
     private UserService userService;
 
+    // login
     @PostMapping("/login")
     public Result<UserLoginResponseDTO> login(@Valid @RequestBody UserLoginCommandDTO commandDTO) {
         System.out.println(commandDTO.getUsername());
@@ -27,4 +29,14 @@ public class User {
 
         return Result.ok(result);
     }
+
+    // register
+    @PostMapping("/add")
+    public Result<UserLoginResponseDTO.UserDetailResponseDTO> register(@Valid @RequestBody UserRegisterCommandDTO commandDTO) {
+
+        return null;
+    }
+
+
+
 }
