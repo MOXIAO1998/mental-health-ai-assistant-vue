@@ -7,10 +7,7 @@ import com.gym.aispringboot.common.Result;
 import com.gym.aispringboot.service.UserService;
 import jakarta.annotation.Resource;
 import jakarta.validation.Valid;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/user")
@@ -36,6 +33,17 @@ public class User {
         UserLoginResponseDTO.UserDetailResponseDTO result = userService.register(commandDTO);
         return Result.ok(result);
     }
+
+    // get user info
+    @GetMapping("/current")
+    public Result<UserLoginResponseDTO.UserDetailResponseDTO> getCurrentUser(){
+        // parse user id from JWT token
+
+
+
+        return Result.ok();
+    }
+
 
 
 }

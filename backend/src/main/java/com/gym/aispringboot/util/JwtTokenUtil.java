@@ -3,10 +3,12 @@ package com.gym.aispringboot.util;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.gym.aispringboot.config.JwtConfig;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 import java.util.Date;
 
@@ -47,5 +49,18 @@ public class JwtTokenUtil implements ApplicationContextAware {
 
     public static JwtConfig getJwtConfig() {
         return applicationContext.getBean(JwtConfig.class);
+    }
+
+    // extract token
+    public static String extractTokenFromRequest(HttpServletRequest request) {
+        if (request == null){
+            return null;
+        }
+
+        String tokenHeader = request.getHeader("token");
+        if(StringUtils.hasText(tokenHeader)){
+            return tokenHeader;
+        }
+        return null;
     }
 }
