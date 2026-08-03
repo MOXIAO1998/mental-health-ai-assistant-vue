@@ -1,7 +1,12 @@
 package com.gym.aispringboot.service.convert;
 
+import com.gym.aispringboot.DTO.command.UserRegisterCommandDTO;
 import com.gym.aispringboot.DTO.response.UserLoginResponseDTO;
 import com.gym.aispringboot.entity.User;
+import com.gym.aispringboot.enumClass.UserStatus;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class UserConvert {
     // construct response DTO
@@ -27,7 +32,7 @@ public class UserConvert {
     }
 
 
-    public static UserLoginResponseDTO entityToLoginResponse(String token, UserLoginResponseDTO.UserDetailResponseDTO userInfo){
+    public static UserLoginResponseDTO entityToLoginResponse(String token, UserLoginResponseDTO.UserDetailResponseDTO userInfo) {
         return UserLoginResponseDTO.builder().
                 userInfo(userInfo).
                 token(token).
@@ -49,4 +54,23 @@ public class UserConvert {
                 return "Unknown";
         }
     }
+
+    public static User registerCommandToEntity(UserRegisterCommandDTO commandDTO, String encodedPassword) {
+        return User.builder().
+                username(commandDTO.getUsername()).
+                email(commandDTO.getEmail()).
+                password(encodedPassword).
+                nickname(commandDTO.getNickname()).
+                phone(commandDTO.getPhone()).
+                gender(commandDTO.getGender()).
+                birthday(commandDTO.getBirthday()).
+                userType(commandDTO.getUserType()).
+                status(UserStatus.NORMAL.getCode()).
+                createdAt(LocalDateTime.now()).
+                updatedAt(LocalDateTime.now()).
+                build();
+
+    }
+
+
 }

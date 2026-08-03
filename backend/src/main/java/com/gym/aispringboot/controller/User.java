@@ -33,10 +33,9 @@ public class User {
     // register
     @PostMapping("/add")
     public Result<UserLoginResponseDTO.UserDetailResponseDTO> register(@Valid @RequestBody UserRegisterCommandDTO commandDTO) {
-
-        return null;
+        UserLoginResponseDTO.UserDetailResponseDTO result = userService.register(commandDTO);
+        return Result.ok(result);
     }
-
 
 
 }

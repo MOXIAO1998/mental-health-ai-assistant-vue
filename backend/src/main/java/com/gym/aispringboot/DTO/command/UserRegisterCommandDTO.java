@@ -6,6 +6,8 @@ import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 
+import java.time.LocalDate;
+
 @Data
 public class UserRegisterCommandDTO {
     @NotBlank(message = "username cannot be empty")
@@ -33,5 +35,5 @@ public class UserRegisterCommandDTO {
 
     private Integer gender;
     private Integer userType = 1;
-
+    private LocalDate birthday;
 }
