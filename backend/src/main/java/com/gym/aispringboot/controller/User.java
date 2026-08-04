@@ -1,12 +1,15 @@
 package com.gym.aispringboot.controller;
 
+import com.auth0.jwt.interfaces.DecodedJWT;
 import com.gym.aispringboot.DTO.command.UserLoginCommandDTO;
 import com.gym.aispringboot.DTO.command.UserRegisterCommandDTO;
 import com.gym.aispringboot.DTO.response.UserLoginResponseDTO;
 import com.gym.aispringboot.common.Result;
 import com.gym.aispringboot.service.UserService;
+import com.gym.aispringboot.util.JwtTokenUtil;
 import jakarta.annotation.Resource;
 import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -14,6 +17,8 @@ import org.springframework.web.bind.annotation.*;
 public class User {
     @Resource
     private UserService userService;
+    @Autowired
+    private JwtTokenUtil jwtTokenUtil;
 
     // login
     @PostMapping("/login")
@@ -36,14 +41,19 @@ public class User {
 
     // get user info
     @GetMapping("/current")
-    public Result<UserLoginResponseDTO.UserDetailResponseDTO> getCurrentUser(){
+    public Result<UserLoginResponseDTO.UserDetailResponseDTO> getCurrentUser() {
         // parse user id from JWT token
+        String token = JwtTokenUtil.getCurrentToken();
+
+        DecodedJWT jwt = JwtTokenUtil.verifyToken(token);
+        Long userId = jwt.getClaim("userId").asLong();
+
+        // invoke service to get user info
+        UserLoginResponseDTO.UserDetailResponseDTO result = userService.getUserById(userId);
+        return Result.ok(result);
 
 
-
-        return Result.ok();
     }
-
 
 
 }

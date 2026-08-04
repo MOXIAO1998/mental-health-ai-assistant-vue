@@ -96,4 +96,13 @@ public class UserService {
 
         return UserConvert.entityToDetailResponse(user);
     }
+
+    public UserLoginResponseDTO.UserDetailResponseDTO getUserById(Long userId) {
+        User user = userMapper.selectById(userId);
+        if (user == null) {
+            throw new BusinessException("user not found");
+        }
+        return UserConvert.entityToDetailResponse(user);
+
+    }
 }
