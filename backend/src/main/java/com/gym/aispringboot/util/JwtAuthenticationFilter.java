@@ -70,6 +70,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                     // clear Context
                     clearSecurityContext();
                     ResponseUtil.WriteError(response, ResultCode.TOKEN_ACCESS_FORBIDDEN);
+                    return;
                 }
             } else {
                 //clear context

@@ -2,6 +2,7 @@ package com.gym.aispringboot.config;
 
 import cn.hutool.core.text.AntPathMatcher;
 import com.gym.aispringboot.util.JwtAuthenticationFilter;
+import jakarta.servlet.DispatcherType;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -18,8 +19,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig {
     private static final AntPathMatcher antPathMatcher = new AntPathMatcher();
 
-
-
     private static final String[] PUBLIC_PATHS = {
             "/",
             "/api/test",
@@ -28,8 +27,8 @@ public class SecurityConfig {
     };
 
     public static Boolean isPublicPath(String requestUri) {
-        for (String publiPath : PUBLIC_PATHS) {
-            if (antPathMatcher.match(publiPath, requestUri)) {
+        for (String publicPath : PUBLIC_PATHS) {
+            if (antPathMatcher.match(publicPath, requestUri)) {
                 return true;
             }
         }
@@ -50,9 +49,13 @@ public class SecurityConfig {
                 .sessionManagement(session-> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 // configure rules for authorization
                 .authorizeHttpRequests(auth->auth
+                    // allow async re-dispatch (SSE/streaming responses) and error dispatch
+                    // to pass without re-authentication — they were already authorized on the
+                    // initial REQUEST dispatch, and the stateless SecurityContext is empty here
+                    .dispatcherTypeMatchers(DispatcherType.ASYNC, DispatcherType.ERROR).permitAll()
                     // public path (no need to be authenticated/login)
                     .requestMatchers(PUBLIC_PATHS).permitAll()
-                    // all other paths (except public path) need to be authenticated
+                    // all other paths (except a public path) need to be authenticated
                     .anyRequest().authenticated()
                 )
                 // add JWT filter

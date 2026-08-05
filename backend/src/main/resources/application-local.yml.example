@@ -1,0 +1,11 @@
+# Local secrets template — copy this file to `application-local.yml` and fill in real values.
+# `application-local.yml` is gitignored and must never be committed.
+#
+#   cp application-local.yml.example application-local.yml
+#
+# The app activates the `local` profile by default (see application.yml), so
+# `application-local.yml` is loaded automatically and overrides the placeholders below.
+spring:
+  ai:
+    openai:
+      api-key: sk-your-openai-api-key-here

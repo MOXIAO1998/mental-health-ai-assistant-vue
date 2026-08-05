@@ -280,7 +280,7 @@ const getRiskText = (level) => {
     }
 }
 
-// 定义处理键盘事件
+// define keyboard event
 const handleKeyDown = (e) => {
     if (e.key === 'Enter' && !e.shiftKey) {
         e.preventDefault()
@@ -327,6 +327,7 @@ const startNewSession = (message) => {
         sessionParams.sessionTitle = currentSession.value.sessionTitle
     }
     // 调用后端接口创建新会话
+    console.log('startSession request payload:', JSON.stringify(sessionParams, null, 2))
     startSession(sessionParams).then(res => {
         // 将后端返回的数据转为前端会话格式
         const sessionData = {

@@ -23,7 +23,7 @@ public class GlobalExceptionHandler {
 
 
 
-    //business expcetion handle
+    //business exception handle
     @ExceptionHandler(BusinessException.class)
     public Result<?> handleBusinessException(BusinessException e) {
         // if exception with additional data

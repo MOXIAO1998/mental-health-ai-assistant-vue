@@ -1,7 +1,7 @@
 package com.gym.aispringboot.AiService;
 
 
-public class StructOuput {
+public class StructOutput {
     public record StreamChatSession(
             String sessionId,
             Long userHash,
