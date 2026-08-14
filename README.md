@@ -506,9 +506,4 @@ Contributions are welcome. A typical workflow:
 
 No license file is currently present in the repository. **License: Not Specified.** Add a `LICENSE` file (e.g. MIT or Apache 2.0) to clarify usage rights.
 
-## Contact
-
-- Author: `<YOUR_NAME_OR_GITHUB_USERNAME>`
-- Repository: `<PROJECT_URL>`
-
 Built with Spring Boot, Spring AI, and Vue 3.
